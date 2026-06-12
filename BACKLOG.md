@@ -37,7 +37,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 5 — Books reader + finish corpus
 
-- [ ] PBI-5.1 `/books/[work-slug]` — chapter-paginated reader, inline "explain passage" agent prompt
+- [x] PBI-5.1 `/books/[slug]` reader. Live Gutenberg fetch + 7-day disk cache at `/tmp/stoicai-books/` (configurable via `STOICAI_BOOK_CACHE_DIR`); passage-aware chunker per work; paginated 10 chapters per `?ch=N`; book-group headings (Meditations / Discourses); per-passage ref displayed (`Meditations 4.7`); mentor CTA; Project Gutenberg back-link. 5 works wired (Meditations, Enchiridion, Discourses, Senecan Essays, Cicero Tusculan); 3 works (Letters-Lucilius, Musonius Lectures, Lives of the Stoics) render with a "source pivot needed" stub linking to Wikisource where applicable. Smoke: all 6 routes 200 with per-book metadata.
 - [ ] PBI-5.2 Ingest Letters 61–124 (~1,250 more items)
 - [ ] PBI-5.3 Ingest Senecan essays (~1,000), Discourses (~2,000), Musonius (~300), Cicero (~600)
 - [ ] PBI-5.4 Derived concepts (~250) + original exercises (~500) — agent-written, human-reviewed
