@@ -45,7 +45,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 6 — Media pipelines
 
-- [ ] PBI-6.1 `/api/media/image` — Runware FLUX brand-card per `item_id`, upload `com27/stoicai/images/`
+- [x] PBI-6.1 `/api/media/image` — Runware FLUX (hard-pinned `runware:100@1`, NOT the central-env default which is Seedance video) → S3 com27 mirror at `stoicai/images/<item_id>.jpg`. Brand-card prompt embeds parchment-and-ink palette + #006699 accent + "no text" guard (FLUX can't render text well). POST + GET probe. 1024×1024 JPEG, ~166KB, ~2.5s generation. Idempotent cache via S3 HEAD. **One follow-up**: com27 bucket policy needs a PublicReadStoicAI statement (same pattern as PublicReadXmas) before the S3 mirror serves publicly — Runware CDN URL works in the meantime. Smoke: end-to-end POST returned HTTP 200 with both runware_url and image_url; PUT to com27 succeeded (verified via direct re-fetch).
 - [ ] PBI-6.2 `/api/media/audio` — Piper TTS per passage, upload `com27/stoicai/audio/`
 - [ ] PBI-6.3 `/api/media/video` — Seedance loops + Remotion composition (via `/abc-videos`), upload `com27/stoicai/videos/`
 - [ ] PBI-6.4 Per-item "Generate image / audio / video" buttons on `/wisdom/[id]` and `/books/[work]/[ch]`
