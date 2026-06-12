@@ -32,7 +32,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 - [ ] PBI-4.1 `/wisdom` — filterable card grid (theme, virtue, context, author) + daily pick + share card
 - [x] PBI-4.2 `/stoics/[slug]` — 8 SSG profile pages with timeline (formatYears BCE/CE), curated bio paragraph, linked works list, per-Stoic theme chips, prev/next nav. Sourced from `src/lib/stoics-data.ts` (single source of truth mirroring `seed.ts`); swap to Supabase query once migration applied. Top-passages section is a placeholder until Phase 1.6 ingest writes rows. Smoke: all 8 routes return HTTP 200 with per-Stoic <title> metadata, nonexistent slug correctly returns 404.
-- [ ] PBI-4.3 `/stoicism` — intro / intermediate / deep tracks rendered from `concept` + `exercise` items
+- [x] PBI-4.3 `/stoicism` guide: 12 curated concepts × 3 tracks (intro / intermediate / deep). Routes: `/stoicism` index, `/stoicism/[track]`, `/stoicism/concept/[slug]`. All SSG via generateStaticParams; per-concept Greek term, body paragraph, associated Stoics (cross-links to `/stoics/[slug]`), see-also (cross-links to other concepts), mentor CTA. Smoke: 7 routes return HTTP 200, 2 bogus paths return 404. Concepts: dichotomy-of-control, four-virtues, memento-mori, premeditatio-malorum, evening-review, amor-fati, preferred-indifferents, prokope, view-from-above, logos, oikeiosis, impressions-and-assent. DB swap once `stoic_items.type='concept'` rows are populated.
 - [ ] PBI-4.4 `/wisdom/[id]` — single-item permalink with citation + media slots + "generate now" buttons
 
 ## Phase 5 — Books reader + finish corpus
