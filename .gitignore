@@ -40,5 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# enrichment dry-run artifacts (regen via `tsx scripts/enrich.ts --input ...`)
+# enrichment / paraphrase / embed dry-run artifacts (regenerable)
 scripts/samples/*.enriched.json
+scripts/samples/*.paraphrased.json
+scripts/samples/*.embedded.json

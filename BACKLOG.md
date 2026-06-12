@@ -15,8 +15,8 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 ## Phase 2 — Enrichment + embedding
 
 - [x] PBI-2.1 `scripts/enrich.ts` — Claude batch enricher: themes, virtue, difficulty, use_contexts, quality_score (0..100). Strict-taxonomy validation, JSON output, dry-run mode against JSON input or DB mode against unenriched stoic_items rows. Smoke: 6 Meditations Book 1 items enriched with valid taxonomy in 2 batches; calibration sane (list-of-relations passages correctly flagged q=38–42, intro difficulty).
-- [ ] PBI-2.2 `scripts/paraphrase.ts` — `text_modern` for top-1000 quality-scored items
-- [ ] PBI-2.3 `scripts/embed.ts` — OpenAI text-embedding-3-small (1536d) → `stoic_items.embedding`
+- [x] PBI-2.2 `scripts/paraphrase.ts` — `text_modern` for top-quality items (≥70 by default). LLM modernizer with strict "preserve argument, drop pseudo-classical register" prompt. JSON array output, dry-run + DB modes. Smoke: 3 Meditations Book 1 items modernized cleanly ("Of my grandfather Verus I have learned…" → "From my grandfather Verus I learned…").
+- [~] PBI-2.3 `scripts/embed.ts` — OpenAI text-embedding-3-small (1536d) → `stoic_items.embedding`. Code complete, batches 100/req, dry-run + DB modes, idempotent. **Blocked by**: OPENAI_API_KEY not in `~/context-2026/agents/.env` (OpenRouter doesn't proxy embeddings — needs direct OpenAI access). Surfaces a clean error message until the key is added.
 - [ ] PBI-2.4 Verification pass on 10% sample (source-checked); `verified=true` flag
 - [ ] PBI-2.5 `match_stoic_items()` RPC smoke: top-8 for "anger" query returns Senecan items
 
