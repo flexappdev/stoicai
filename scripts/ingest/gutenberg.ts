@@ -70,18 +70,24 @@ export function stripGutenbergBoilerplate(raw: string): { body: string; bytes: n
   return { body, bytes: body.length, lines: body.split("\n").length };
 }
 
-// Canonical Stoic Gutenberg IDs
+// Canonical Stoic Gutenberg IDs — confirmed against the PG author page #1308
+// for Lucius Annaeus Seneca, the Marcus Aurelius pages, and Epictetus catalog.
+//
+// IMPORTANT: Letters to Lucilius (Gummere trans.) is NOT on Project Gutenberg.
+// It lives on Wikisource as page-per-letter:
+//   https://en.wikisource.org/wiki/Moral_letters_to_Lucilius
+// Use a separate Wikisource fetcher (scripts/ingest/wikisource.ts) for PBI-1.5.
 export const STOIC_GUTENBERG = {
-  meditations_long: "2680",        // Meditations, trans. George Long
-  enchiridion_higginson: "45109",  // Enchiridion, trans. Higginson
-  discourses_long: "10661",        // Discourses, trans. George Long
-  letters_lucilius_v1: "56075",    // Seneca, Letters Vol I (Gummere)
-  letters_lucilius_v2: "56076",    // Seneca, Letters Vol II
-  letters_lucilius_v3: "56077",    // Seneca, Letters Vol III
-  senecan_essays_basore: "60863",  // Seneca, Moral Essays (Stewart-adjacent)
-  diogenes_lives: "57342",         // Diogenes Laertius, Lives (Hicks vol 2)
-  cicero_tusculan: "14988",        // Tusculan Disputations
-  cicero_de_officiis: "555",       // De Officiis (Walker trans.)
+  meditations_long: "2680",              // Meditations, trans. George Long (1862)
+  enchiridion_higginson: "45109",        // Enchiridion, trans. T. W. Higginson (1865)
+  discourses_long: "10661",              // Discourses of Epictetus, trans. George Long
+  senecan_morals_l_estrange: "56075",    // Seneca's Morals of a Happy Life, Benefits, Anger, Clemency (Sir Roger L'Estrange, 1882)
+  seneca_minor_dialogues: "64576",       // Minor Dialogues + On Clemency (Stewart trans.)
+  seneca_on_benefits: "3794",            // L. Annaeus Seneca on Benefits (Stewart)
+  seneca_quaestiones: "76392",           // Physical science in the time of Nero (Quaestiones Naturales)
+  cicero_tusculan: "14988",              // Tusculan Disputations
+  cicero_de_officiis: "555",             // De Officiis
+  diogenes_lives: "57342",               // Diogenes Laertius, Lives of Eminent Philosophers (Hicks vol 2)
 } as const;
 
 if (require.main === module) {

@@ -8,7 +8,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 - [x] PBI-1.2 `scripts/ingest/chunker.ts` — passage-aware chunker (numbered passages, NOT token-naive) — Enchiridion 62 chunks, Meditations 479 chunks via smoke harness
 - [x] PBI-1.3 `scripts/ingest/meditations.ts` — Marcus Aurelius / George Long → 479 dry-run items
 - [x] PBI-1.4 `scripts/ingest/enchiridion.ts` — Epictetus / Higginson → 62 dry-run items
-- [ ] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation
+- [~] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation. **Source pivot needed**: Letters to Lucilius (Gummere) is NOT on Project Gutenberg (confirmed against PG author #1308). It lives on Wikisource at `https://en.wikisource.org/wiki/Moral_letters_to_Lucilius` — page-per-letter. Defer until a Wikisource fetcher is written; can fall back to PG#56075 (Seneca's *Morals of a Happy Life, Benefits, Anger, Clemency* by L'Estrange) for ~1,000 Senecan items in the meantime as Phase 5.3.
 - [~] PBI-1.6 Insert path — `db.ts` admin client + `upsertItems()` + `seed.ts` ready; **blocked by migration 0001 not applied to prod Supabase project** (all 7 tables missing — apply via Studio SQL editor)
 - [ ] PBI-1.7 Smoke: `select count(*) from stoic_items` ≥ 5000 (blocked by PBI-1.6 above)
 
@@ -22,11 +22,11 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 3 — Agent v1
 
-- [ ] PBI-3.1 `/api/agent/chat` route: persona system prompt + retrieval over `stoic_items` (top-8) + citation rules
-- [ ] PBI-3.2 Tools: `search_wisdom(query, theme, author)`, `daily_stoic()`, `create_exercise(situation)`
-- [ ] PBI-3.3 `/` agent page UI: chat panel + tasks panel + OpenRouter model selector dropdown (4 tiers)
-- [ ] PBI-3.4 Guardrails: never invent quotes, crisis-language deflection + resources
-- [ ] PBI-3.5 Tasks mode: morning intention, evening review, premeditatio script, 7-day discipline plan
+- [x] PBI-3.1 `/api/agent/chat` route: Stoic mentor persona + ilike-keyword retrieval over `stoic_items` (top-6) + citation block. Degrades gracefully when corpus is empty (no fabricated citations). Embedding-based vector retrieval upgrades to RPC `match_stoic_items()` once Phase 2 embeddings are populated.
+- [ ] PBI-3.2 Tools: `search_wisdom(query, theme, author)`, `daily_stoic()`, `create_exercise(situation)` — promote keyword retrieval into explicit tool-calls
+- [x] PBI-3.3 `/` agent page UI: 4-tier model selector dropdown + RAG toggle + starter prompts + scrollable chat area
+- [x] PBI-3.4 Guardrails: never invent quotes baked into `src/lib/persona.ts` system prompt; crisis-language deflection to Samaritans / 988
+- [ ] PBI-3.5 Tasks mode: morning intention, evening review, premeditatio script, 7-day discipline plan (persona prompts handle these; UI shortcut buttons TBD)
 
 ## Phase 4 — Content sections
 
