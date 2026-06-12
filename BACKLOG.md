@@ -6,11 +6,11 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 - [x] PBI-1.1 `scripts/ingest/gutenberg.ts` — fetch Gutenberg by gutenberg_id, strip headers/footers
 - [x] PBI-1.2 `scripts/ingest/chunker.ts` — passage-aware chunker (numbered passages, NOT token-naive) — Enchiridion 62 chunks, Meditations 479 chunks via smoke harness
-- [ ] PBI-1.3 `scripts/ingest/meditations.ts` — load 12 books × ~100 passages → `stoic_items`
-- [ ] PBI-1.4 `scripts/ingest/enchiridion.ts` — 53 chapters, sub-chunked where needed
+- [x] PBI-1.3 `scripts/ingest/meditations.ts` — Marcus Aurelius / George Long → 479 dry-run items
+- [x] PBI-1.4 `scripts/ingest/enchiridion.ts` — Epictetus / Higginson → 62 dry-run items
 - [ ] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation
-- [ ] PBI-1.6 Insert with `verified=false`, `quality_score=50` default, `embedding=null`
-- [ ] PBI-1.7 Smoke: `select count(*) from stoic_items` ≥ 5000
+- [~] PBI-1.6 Insert path — `db.ts` admin client + `upsertItems()` + `seed.ts` ready; **blocked by migration 0001 not applied to prod Supabase project** (all 7 tables missing — apply via Studio SQL editor)
+- [ ] PBI-1.7 Smoke: `select count(*) from stoic_items` ≥ 5000 (blocked by PBI-1.6 above)
 
 ## Phase 2 — Enrichment + embedding
 

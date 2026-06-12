@@ -1,36 +1,49 @@
-// Phase 1 smoke harness — fetches Enchiridion + Meditations Book 1 from Gutenberg
-// and runs the chunker against them. No DB writes. Verifies the two primitives
-// from PBI-1.1 + PBI-1.2 work end-to-end.
+// Phase 1 smoke harness — exercises Gutenberg fetcher, chunker, and the
+// per-work loaders end-to-end. Dry-run (no DB writes). Also pings the
+// Supabase schema and reports whether migration 0001 has been applied.
 
-import { fetchGutenberg, STOIC_GUTENBERG } from "./gutenberg";
-import { chunk } from "./chunker";
+import { loadMeditations } from "./meditations";
+import { loadEnchiridion } from "./enchiridion";
+import { pingSchema } from "./db";
 
 async function main() {
   console.log("=== StoicAI Phase 1 smoke ===\n");
 
-  console.log(`→ Enchiridion (gutenberg ${STOIC_GUTENBERG.enchiridion_higginson})`);
-  const ench = await fetchGutenberg(STOIC_GUTENBERG.enchiridion_higginson);
-  console.log(`  ${ench.bytes} bytes, ${ench.lines} lines`);
-  const enchChunks = chunk(ench.body, { mode: "enchiridion" });
-  console.log(`  ${enchChunks.length} chunks parsed`);
-  enchChunks.slice(0, 3).forEach((c) => {
-    console.log(`    [${c.ref}] ${c.text.slice(0, 100).replace(/\s+/g, " ")}…`);
+  console.log("→ Enchiridion (Higginson)");
+  const ench = await loadEnchiridion();
+  console.log(`  ${ench.length} items`);
+  ench.slice(0, 2).forEach((c) => {
+    console.log(`    [${c.source_ref}] ${c.text.slice(0, 100).replace(/\s+/g, " ")}…`);
   });
 
-  console.log(`\n→ Meditations (gutenberg ${STOIC_GUTENBERG.meditations_long})`);
-  const med = await fetchGutenberg(STOIC_GUTENBERG.meditations_long);
-  console.log(`  ${med.bytes} bytes, ${med.lines} lines`);
-  const medChunks = chunk(med.body, { mode: "meditations" });
-  console.log(`  ${medChunks.length} chunks parsed`);
-  medChunks.slice(0, 3).forEach((c) => {
-    console.log(`    [${c.ref}] ${c.text.slice(0, 100).replace(/\s+/g, " ")}…`);
+  console.log("\n→ Meditations (Long)");
+  const med = await loadMeditations();
+  console.log(`  ${med.length} items`);
+  med.slice(0, 2).forEach((c) => {
+    console.log(`    [${c.source_ref}] ${c.text.slice(0, 100).replace(/\s+/g, " ")}…`);
   });
 
-  console.log("\n✓ Phase 1 primitives functional");
-  console.log(`  Combined: ${enchChunks.length + medChunks.length} chunks ready for stoic_items insert`);
+  console.log("\n→ Supabase schema");
+  try {
+    const ping = await pingSchema();
+    if (ping.schema_ready) {
+      console.log("  ✓ All 7 tables exist");
+      console.log("  table_counts:", ping.table_counts);
+    } else {
+      console.log("  ⚠ migration 0001 not applied yet");
+      console.log("  missing:", ping.missing.join(", "));
+      console.log("  apply via Supabase Studio SQL editor or PAT, then ingest can write.");
+    }
+  } catch (e) {
+    console.log("  ⚠ pingSchema failed:", e instanceof Error ? e.message : String(e));
+  }
+
+  console.log(
+    `\n✓ Phase 1 primitives + loaders functional · ${ench.length + med.length} items ready`,
+  );
 }
 
 main().catch((e) => {
-  console.error("✗", e);
+  console.error("✗", e instanceof Error ? e.message : String(e));
   process.exit(1);
 });
