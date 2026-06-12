@@ -31,7 +31,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 ## Phase 4 — Content sections
 
 - [ ] PBI-4.1 `/wisdom` — filterable card grid (theme, virtue, context, author) + daily pick + share card
-- [ ] PBI-4.2 `/stoics/[slug]` — profile pages with timeline, works, top items, portrait
+- [x] PBI-4.2 `/stoics/[slug]` — 8 SSG profile pages with timeline (formatYears BCE/CE), curated bio paragraph, linked works list, per-Stoic theme chips, prev/next nav. Sourced from `src/lib/stoics-data.ts` (single source of truth mirroring `seed.ts`); swap to Supabase query once migration applied. Top-passages section is a placeholder until Phase 1.6 ingest writes rows. Smoke: all 8 routes return HTTP 200 with per-Stoic <title> metadata, nonexistent slug correctly returns 404.
 - [ ] PBI-4.3 `/stoicism` — intro / intermediate / deep tracks rendered from `concept` + `exercise` items
 - [ ] PBI-4.4 `/wisdom/[id]` — single-item permalink with citation + media slots + "generate now" buttons
 
