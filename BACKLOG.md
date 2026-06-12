@@ -4,8 +4,8 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 1 — Ingest (target: 5K items)
 
-- [ ] PBI-1.1 `scripts/ingest/gutenberg.ts` — fetch Gutenberg by gutenberg_id, strip headers/footers
-- [ ] PBI-1.2 `scripts/ingest/chunker.ts` — passage-aware chunker (numbered passages, NOT token-naive)
+- [x] PBI-1.1 `scripts/ingest/gutenberg.ts` — fetch Gutenberg by gutenberg_id, strip headers/footers
+- [x] PBI-1.2 `scripts/ingest/chunker.ts` — passage-aware chunker (numbered passages, NOT token-naive) — Enchiridion 62 chunks, Meditations 479 chunks via smoke harness
 - [ ] PBI-1.3 `scripts/ingest/meditations.ts` — load 12 books × ~100 passages → `stoic_items`
 - [ ] PBI-1.4 `scripts/ingest/enchiridion.ts` — 53 chapters, sub-chunked where needed
 - [ ] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation
