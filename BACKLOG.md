@@ -46,7 +46,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 ## Phase 6 — Media pipelines
 
 - [x] PBI-6.1 `/api/media/image` — Runware FLUX (hard-pinned `runware:100@1`, NOT the central-env default which is Seedance video) → S3 com27 mirror at `stoicai/images/<item_id>.jpg`. Brand-card prompt embeds parchment-and-ink palette + #006699 accent + "no text" guard (FLUX can't render text well). POST + GET probe. 1024×1024 JPEG, ~166KB, ~2.5s generation. Idempotent cache via S3 HEAD. **One follow-up**: com27 bucket policy needs a PublicReadStoicAI statement (same pattern as PublicReadXmas) before the S3 mirror serves publicly — Runware CDN URL works in the meantime. Smoke: end-to-end POST returned HTTP 200 with both runware_url and image_url; PUT to com27 succeeded (verified via direct re-fetch).
-- [ ] PBI-6.2 `/api/media/audio` — Piper TTS per passage, upload `com27/stoicai/audio/`
+- [~] PBI-6.2 `/api/media/audio` — OpenAI TTS-1 (default voice `onyx`, Senecan-mentor register) → S3 com27 mirror at `stoicai/audio/<item_id>.mp3`. POST + GET probe, idempotent cache, 4000-char single-call cap surfaces clearly. Pivoted from Piper (local-only, weighs ~200MB and runs on CPU) to OpenAI TTS-1 — same OPENAI_API_KEY unlock as embed. Smoke: GET probe returns `tts_ready: false` until key added; POST returns HTTP 503 with clean message. Activates the moment OPENAI_API_KEY lands (task #20).
 - [ ] PBI-6.3 `/api/media/video` — Seedance loops + Remotion composition (via `/abc-videos`), upload `com27/stoicai/videos/`
 - [ ] PBI-6.4 Per-item "Generate image / audio / video" buttons on `/wisdom/[id]` and `/books/[work]/[ch]`
 - [ ] PBI-6.5 Browse pages `/images`, `/audio`, `/videos` paginated grids from `media` table
