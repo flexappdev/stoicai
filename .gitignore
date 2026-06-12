@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# enrichment dry-run artifacts (regen via `tsx scripts/enrich.ts --input ...`)
+scripts/samples/*.enriched.json

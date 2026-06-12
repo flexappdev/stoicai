@@ -14,7 +14,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 2 — Enrichment + embedding
 
-- [ ] PBI-2.1 `scripts/enrich.ts` — per-item Claude batch: themes, virtue, difficulty, use_contexts, quality_score
+- [x] PBI-2.1 `scripts/enrich.ts` — Claude batch enricher: themes, virtue, difficulty, use_contexts, quality_score (0..100). Strict-taxonomy validation, JSON output, dry-run mode against JSON input or DB mode against unenriched stoic_items rows. Smoke: 6 Meditations Book 1 items enriched with valid taxonomy in 2 batches; calibration sane (list-of-relations passages correctly flagged q=38–42, intro difficulty).
 - [ ] PBI-2.2 `scripts/paraphrase.ts` — `text_modern` for top-1000 quality-scored items
 - [ ] PBI-2.3 `scripts/embed.ts` — OpenAI text-embedding-3-small (1536d) → `stoic_items.embedding`
 - [ ] PBI-2.4 Verification pass on 10% sample (source-checked); `verified=true` flag
