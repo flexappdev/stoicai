@@ -10,7 +10,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 - [x] PBI-1.4 `scripts/ingest/enchiridion.ts` — Epictetus / Higginson → 62 dry-run items
 - [~] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation. **Source pivot needed**: Letters to Lucilius (Gummere) is NOT on Project Gutenberg (confirmed against PG author #1308). It lives on Wikisource at `https://en.wikisource.org/wiki/Moral_letters_to_Lucilius` — page-per-letter. Defer until a Wikisource fetcher is written; can fall back to PG#56075 (Seneca's *Morals of a Happy Life, Benefits, Anger, Clemency* by L'Estrange) for ~1,000 Senecan items in the meantime as Phase 5.3.
 - [x] PBI-1.6 Insert path LIVE. Migration 0001 applied via `/abc-supabase migrate` (Management API PAT → `POST /v1/projects/<ref>/database/query`). Seeds inserted: 8 stoics + 8 works + 12 themes. Loaders ran end-to-end against prod: Enchiridion 62 rows in 1 batch, Meditations 479 rows in 3 batches.
-- [~] PBI-1.7 Smoke: `count(stoic_items) = 541` ✅ — covers Phase 1 from Meditations + Enchiridion. Path to 5K runs through PBI-1.5 Letters (needs Wikisource fetcher) + PBI-5.3 (Discourses, Senecan essays, Cicero already wired via book-loader; just need ingest scripts mirroring meditations.ts/enchiridion.ts).
+- [x] PBI-1.7 Smoke: `count(stoic_items) = 3245` ✅ (Meditations 479 + Enchiridion 62 + Discourses 348 + Senecan-essays 599 + Cicero-Tusculan 1757). Path to 5K: PBI-1.5 Letters via Wikisource fetcher (~2.5K remaining) + boilerplate cleanup pass once enrichment lands.
 
 ## Phase 2 — Enrichment + embedding
 
@@ -39,7 +39,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 - [x] PBI-5.1 `/books/[slug]` reader. Live Gutenberg fetch + 7-day disk cache at `/tmp/stoicai-books/` (configurable via `STOICAI_BOOK_CACHE_DIR`); passage-aware chunker per work; paginated 10 chapters per `?ch=N`; book-group headings (Meditations / Discourses); per-passage ref displayed (`Meditations 4.7`); mentor CTA; Project Gutenberg back-link. 5 works wired (Meditations, Enchiridion, Discourses, Senecan Essays, Cicero Tusculan); 3 works (Letters-Lucilius, Musonius Lectures, Lives of the Stoics) render with a "source pivot needed" stub linking to Wikisource where applicable. Smoke: all 6 routes 200 with per-book metadata.
 - [ ] PBI-5.2 Ingest Letters 61–124 (~1,250 more items)
-- [ ] PBI-5.3 Ingest Senecan essays (~1,000), Discourses (~2,000), Musonius (~300), Cicero (~600)
+- [~] PBI-5.3 Ingest Senecan essays (599 ✅ via L'Estrange PG#56075) + Discourses (348 ✅ via Long PG#10661) + Cicero Tusculan (1757 ✅ via Yonge PG#14988). Musonius Lectures still owed (Lutz translation not on PG — needs Wikisource or external scrape).
 - [ ] PBI-5.4 Derived concepts (~250) + original exercises (~500) — agent-written, human-reviewed
 - [ ] PBI-5.5 Smoke: `select count(*) from stoic_items` ≥ 10000
 
