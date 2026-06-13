@@ -9,8 +9,8 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 - [x] PBI-1.3 `scripts/ingest/meditations.ts` — Marcus Aurelius / George Long → 479 dry-run items
 - [x] PBI-1.4 `scripts/ingest/enchiridion.ts` — Epictetus / Higginson → 62 dry-run items
 - [~] PBI-1.5 `scripts/ingest/letters-lucilius.ts` — Letters 1–60 (~1,250 items), Gummere translation. **Source pivot needed**: Letters to Lucilius (Gummere) is NOT on Project Gutenberg (confirmed against PG author #1308). It lives on Wikisource at `https://en.wikisource.org/wiki/Moral_letters_to_Lucilius` — page-per-letter. Defer until a Wikisource fetcher is written; can fall back to PG#56075 (Seneca's *Morals of a Happy Life, Benefits, Anger, Clemency* by L'Estrange) for ~1,000 Senecan items in the meantime as Phase 5.3.
-- [~] PBI-1.6 Insert path — `db.ts` admin client + `upsertItems()` + `seed.ts` ready; **blocked by migration 0001 not applied to prod Supabase project** (all 7 tables missing — apply via Studio SQL editor)
-- [ ] PBI-1.7 Smoke: `select count(*) from stoic_items` ≥ 5000 (blocked by PBI-1.6 above)
+- [x] PBI-1.6 Insert path LIVE. Migration 0001 applied via `/abc-supabase migrate` (Management API PAT → `POST /v1/projects/<ref>/database/query`). Seeds inserted: 8 stoics + 8 works + 12 themes. Loaders ran end-to-end against prod: Enchiridion 62 rows in 1 batch, Meditations 479 rows in 3 batches.
+- [~] PBI-1.7 Smoke: `count(stoic_items) = 541` ✅ — covers Phase 1 from Meditations + Enchiridion. Path to 5K runs through PBI-1.5 Letters (needs Wikisource fetcher) + PBI-5.3 (Discourses, Senecan essays, Cicero already wired via book-loader; just need ingest scripts mirroring meditations.ts/enchiridion.ts).
 
 ## Phase 2 — Enrichment + embedding
 
