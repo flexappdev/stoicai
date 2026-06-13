@@ -24,6 +24,33 @@ const STARTERS = [
   "Premeditatio for a difficult conversation tomorrow.",
 ];
 
+const TASKS: { label: string; prompt: string; hint: string }[] = [
+  {
+    label: "Morning intention",
+    prompt:
+      "Give me a morning intention in the Epictetan style. Three bullets: what is in my control today, what could go wrong, how I will respond Stoically. Be specific, not abstract.",
+    hint: "Premeditatio + dichotomy of control",
+  },
+  {
+    label: "Evening review",
+    prompt:
+      "Walk me through a Senecan evening review. Ask me three questions in sequence (one at a time): what did I do well today, where did I fail, how will I do better tomorrow. Wait for my answer before asking the next.",
+    hint: "Sextius / Seneca — Letters 83",
+  },
+  {
+    label: "Premeditatio",
+    prompt:
+      "I have a difficult situation coming up. Help me rehearse it as a premeditatio malorum. Ask me what the situation is, then walk me through: (1) the worst plausible outcome, (2) the most likely outcome, (3) my virtue-preserving response in each case.",
+    hint: "Rehearse the worst",
+  },
+  {
+    label: "7-day plan",
+    prompt:
+      "Design me a 7-day Stoic discipline plan. One practice per day, building in difficulty. Each day cites a relevant passage (Meditations / Letters / Enchiridion / Discourses) and gives a 2-sentence \"why\" plus a concrete action.",
+    hint: "Progressive askesis",
+  },
+];
+
 export default function AgentChat() {
   const [tier, setTier] = useState<Tier>("balanced");
   const [rag, setRag] = useState(true);
@@ -107,6 +134,23 @@ export default function AgentChat() {
             ))}
           </select>
         </div>
+      </div>
+
+      {/* Tasks bar — PBI-3.5 */}
+      <div className="px-3 py-2 border-b border-[var(--rule)] flex flex-wrap items-center gap-2 text-[11px]">
+        <span className="text-[var(--ink-soft)] uppercase tracking-wider mr-1">tasks</span>
+        {TASKS.map((t) => (
+          <button
+            key={t.label}
+            type="button"
+            disabled={busy}
+            onClick={() => send(t.prompt)}
+            title={t.hint}
+            className="rounded border border-[var(--rule)] px-2 py-1 hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-50"
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
       <div className="px-4 py-3 max-h-[60vh] min-h-[40vh] overflow-y-auto flex flex-col gap-3">

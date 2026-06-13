@@ -26,7 +26,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 - [ ] PBI-3.2 Tools: `search_wisdom(query, theme, author)`, `daily_stoic()`, `create_exercise(situation)` — promote keyword retrieval into explicit tool-calls
 - [x] PBI-3.3 `/` agent page UI: 4-tier model selector dropdown + RAG toggle + starter prompts + scrollable chat area
 - [x] PBI-3.4 Guardrails: never invent quotes baked into `src/lib/persona.ts` system prompt; crisis-language deflection to Samaritans / 988
-- [ ] PBI-3.5 Tasks mode: morning intention, evening review, premeditatio script, 7-day discipline plan (persona prompts handle these; UI shortcut buttons TBD)
+- [x] PBI-3.5 Tasks mode: 4 shortcut buttons on the AgentChat header bar (Morning intention / Evening review / Premeditatio / 7-day plan), each sends a pre-curated mentor prompt that drives the structured Stoic exercise. Tooltip hint per button. Smoke: home page returns all 4 button labels in SSR.
 
 ## Phase 4 — Content sections
 
@@ -49,7 +49,7 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 - [~] PBI-6.2 `/api/media/audio` — OpenAI TTS-1 (default voice `onyx`, Senecan-mentor register) → S3 com27 mirror at `stoicai/audio/<item_id>.mp3`. POST + GET probe, idempotent cache, 4000-char single-call cap surfaces clearly. Pivoted from Piper (local-only, weighs ~200MB and runs on CPU) to OpenAI TTS-1 — same OPENAI_API_KEY unlock as embed. Smoke: GET probe returns `tts_ready: false` until key added; POST returns HTTP 503 with clean message. Activates the moment OPENAI_API_KEY lands (task #20).
 - [x] PBI-6.3 `/api/media/video` — Runware Seedance (`bytedance:2@2`) async videoInference + getResponse polling (5s tick, 120s timeout), 720×1280 9:16 vertical, 5s default, ambient-prompt template (marble bust + candlelight + dust + #006699 tone, no text). S3 mirror at `stoicai/videos/<item_id>.mp4`. Spend gate: 402 unless `confirm: true` (cached responses bypass). Route compiles + smoke verified GET probe + POST gate. Remotion composition for tentpole items deferred to a later pass — current single-clip generation is sufficient for daily share clips.
 - [x] PBI-6.4 Per-card MediaActions panel on `/wisdom` — lazy-open ("+ media"), then probes `/api/media/{image,audio,video}?item_id=...` for cached assets, surfaces 3 generate buttons with inline previews (img / `<audio controls>` / `<video controls>`). Image generation 1-click; video shows a confirm() dialog disclosing $0.25/30-60s cost before POSTing with `confirm: true`. Cached responses auto-load on panel open. Smoke: /wisdom HTTP 200 with 30 `+ media` buttons SSR-rendered (one per card).
-- [ ] PBI-6.5 Browse pages `/images`, `/audio`, `/videos` paginated grids from `media` table
+- [x] PBI-6.5 Browse pages `/images`, `/audio`, `/videos` — live S3 ListObjectsV2 over `com27/stoicai/<kind>/` cross-joined with WISDOM by item_id. Renders grid (images), audio list with inline `<audio controls>` + quote, video grid with `<video controls>` 9:16 cards. force-dynamic + revalidate=0 so each visit shows the latest. Empty-state CTAs link back to /wisdom. Smoke: HTTP 200 all three; /images already shows `ench-1` from the earlier generation (visible via the S3 listing even though public reads are still gated by task #21).
 
 ## Phase 7 — QA + ship
 

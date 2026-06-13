@@ -3,7 +3,7 @@
 // bucket. The fleet pattern (per the appai project's hard-won lesson)
 // is to prefer S3_REGION and ignore AWS_REGION.
 
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { env } from "./env";
 
 let _s3: S3Client | null = null;
@@ -52,4 +52,34 @@ export async function uploadBuffer(opts: {
 export function s3Key(parts: string[]): string {
   const s = env.s3();
   return [s.prefix, ...parts].filter(Boolean).join("/");
+}
+
+export interface S3Listing {
+  key: string;
+  url: string;
+  bytes: number;
+  modified: string;
+  item_id: string;
+}
+
+export async function listPrefix(subPrefix: string, max = 200): Promise<S3Listing[]> {
+  const s = env.s3();
+  const cli = client();
+  const fullPrefix = [s.prefix, subPrefix].filter(Boolean).join("/");
+  const r = await cli.send(
+    new ListObjectsV2Command({ Bucket: s.bucket, Prefix: fullPrefix, MaxKeys: max }),
+  );
+  const base = s.publicBase.replace(/\/+$/, "");
+  return (r.Contents ?? []).map((o) => {
+    const key = o.Key ?? "";
+    const fileName = key.split("/").pop() ?? "";
+    const item_id = fileName.replace(/\.[^.]+$/, "");
+    return {
+      key,
+      url: `${base}/${key}`,
+      bytes: o.Size ?? 0,
+      modified: o.LastModified?.toISOString() ?? "",
+      item_id,
+    };
+  });
 }
