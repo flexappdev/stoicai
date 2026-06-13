@@ -27,7 +27,7 @@ export default async function WisdomPage({ searchParams }: Props) {
         <p className="text-[var(--ink-soft)] max-w-2xl mt-3">
           A curated set of {30}+ memorable passages from the corpus. Filter by theme (anger,
           control, time, death…), virtue, author, or use-context (morning, crisis, decision).
-          Click any chip to refine; click a quote's <em>copy</em> button to share. The full
+          Click any chip to refine; click a quote&apos;s <em>copy</em> button to share. The full
           10K-item dataset takes over once Phase 1 ingest unblocks.
         </p>
       </header>

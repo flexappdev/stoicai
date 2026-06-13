@@ -165,7 +165,7 @@ async function main() {
     console.error(`→ DB mode: ${items.length} unenriched items`);
   }
 
-  let enriched: { input: StoicItemInsert; e: Enrichment }[] = [];
+  const enriched: { input: StoicItemInsert; e: Enrichment }[] = [];
   for (let i = 0; i < items.length; i += opts.batchSize) {
     const batch = items.slice(i, i + opts.batchSize);
     process.stderr.write(`  · batch ${Math.floor(i / opts.batchSize) + 1} (${batch.length} items)…`);

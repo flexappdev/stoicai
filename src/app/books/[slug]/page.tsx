@@ -138,8 +138,8 @@ export default async function BookPage({ params, searchParams }: Props) {
           <Link href="/" className="text-[var(--accent)] hover:underline">
             Stoic mentor
           </Link>{" "}
-          to explain any passage on this page or to apply it to a specific situation you're working
-          through.
+          to explain any passage on this page or to apply it to a specific situation you&apos;re
+          working through.
         </p>
       </section>
     </article>

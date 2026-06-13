@@ -53,8 +53,8 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 ## Phase 7 — QA + ship
 
-- [ ] PBI-7.1 `/abc-cleanup` — lint + unused-import sweep
-- [ ] PBI-7.2 `vitest` smoke suite: llm.ts fallback chain, supabase ping, schema integrity
+- [x] PBI-7.1 lint sweep — fixed 4 errors + 1 warning in scripts/enrich.ts, scripts/ingest/chunker.ts, src/app/books/[slug]/page.tsx, src/app/stoicism/concept/[slug]/page.tsx, src/app/wisdom/page.tsx (prefer-const + unescaped-entities + no-unused-vars). `npm run lint` exits 0.
+- [x] PBI-7.2 vitest smoke harness — 18/18 green across 3 suites: tests/chunker.test.ts (5 cases against Meditations BOOK + Enchiridion + paragraph fallback + minLen filter), tests/llm.test.ts (regex-checks llm.ts tier table so the AIOS gotcha can never regress — paid claude-sonnet-4-6 must lead every chain, especially "free"), tests/data.test.ts (13 cases — stoics chronology, FK consistency between WORKS↔STOICS, formatYears BCE/CE, concepts see_also + associated_stoics resolve, wisdom taxonomy validation, dailyPick determinism). npm scripts: `test` + `test:watch`.
 - [ ] PBI-7.3 `/abc-aa` — affiliate-link audit (book affiliate links on `/books`)
 - [ ] PBI-7.4 `/abc-ga sync stoicai G-XXXX` — GA4 wired (env owed)
 - [ ] PBI-7.5 `/abc-vercel set up vercel for stoicai` + env sync + `vercel --prod`

@@ -46,7 +46,7 @@ export function chunk(body: string, opts: ChunkerOpts): RawChunk[] {
       break;
   }
   const cleaned: RawChunk[] = [];
-  raw.forEach((r, i) => {
+  raw.forEach((r) => {
     const t = normalize(r.text);
     if (t.length < minLen) return;
     if (t.length <= maxLen) {
@@ -232,7 +232,7 @@ function splitChapters(body: string, bookRef: string): { ref: string; text: stri
 function splitParagraphs(body: string, refPrefix: string): { ref: string; text: string }[] {
   return body
     .split(/\n\s*\n+/)
-    .map((p, i) => ({ ref: `${refPrefix}.${i + 1}`, text: p }))
+    .map((p, idx) => ({ ref: `${refPrefix}.${idx + 1}`, text: p }))
     .filter((c) => c.text.trim().length > 0);
 }
 

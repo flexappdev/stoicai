@@ -47,7 +47,7 @@ export const CONCEPTS: Concept[] = [
     track: "intro",
     one_liner: "Remember you will die — not to be morbid, but to be present.",
     body: "Marcus reminds himself daily that he is mortal. Not as a goth's affectation but as a corrective: against fame, against grudges, against trivialities, against postponing the life you mean to live. Seneca says we don't lack time, we waste it; we behave as if we have an infinite supply. Hold the thought of your death lightly and often, and the trivial gets demoted, the important gets clear, and ordinary moments become sufficient because you stop demanding they be permanent.",
-    see_also: ["amor-fati", "carpe-diem-vs-stoic-now"],
+    see_also: ["amor-fati"],
     associated_stoics: ["marcus", "seneca"],
     themes: ["death", "time"],
   },

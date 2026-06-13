@@ -104,7 +104,7 @@ export default async function ConceptPage({ params }: Props) {
             Stoic mentor
           </Link>{" "}
           how to put <em>{c.name.toLowerCase()}</em> into practice today, or to show you how it
-          handles a specific situation you're facing.
+          handles a specific situation you&apos;re facing.
         </p>
       </section>
 

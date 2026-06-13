@@ -8,6 +8,8 @@
     "start": "next start --port 17003",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "ingest": "tsx scripts/ingest/index.ts",
     "enrich": "tsx scripts/enrich.ts",
     "embed": "tsx scripts/embed.ts"
@@ -32,6 +34,7 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "tsx": "^4.19.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
   }
 }
