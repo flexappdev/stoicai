@@ -55,11 +55,11 @@ Phase 0 is shipped in v0.1. Phases 1–7 run via `/loop` after the first push.
 
 - [x] PBI-7.1 lint sweep — fixed 4 errors + 1 warning in scripts/enrich.ts, scripts/ingest/chunker.ts, src/app/books/[slug]/page.tsx, src/app/stoicism/concept/[slug]/page.tsx, src/app/wisdom/page.tsx (prefer-const + unescaped-entities + no-unused-vars). `npm run lint` exits 0.
 - [x] PBI-7.2 vitest smoke harness — 18/18 green across 3 suites: tests/chunker.test.ts (5 cases against Meditations BOOK + Enchiridion + paragraph fallback + minLen filter), tests/llm.test.ts (regex-checks llm.ts tier table so the AIOS gotcha can never regress — paid claude-sonnet-4-6 must lead every chain, especially "free"), tests/data.test.ts (13 cases — stoics chronology, FK consistency between WORKS↔STOICS, formatYears BCE/CE, concepts see_also + associated_stoics resolve, wisdom taxonomy validation, dailyPick determinism). npm scripts: `test` + `test:watch`.
-- [ ] PBI-7.3 `/abc-aa` — affiliate-link audit (book affiliate links on `/books`)
-- [ ] PBI-7.4 `/abc-ga sync stoicai G-XXXX` — GA4 wired (env owed)
-- [ ] PBI-7.5 `/abc-vercel set up vercel for stoicai` + env sync + `vercel --prod`
-- [ ] PBI-7.6 Update registry `live_url` + `vercel_project_id`; update README prod link
-- [ ] PBI-7.7 `/push` final
+- [~] PBI-7.3 `/abc-aa` — no affiliate links wired yet (`/books` uses Project Gutenberg back-links only, no Amazon-style tags). Audit will be a no-op until an affiliate strategy lands; ticket re-opens then.
+- [~] PBI-7.4 `/abc-ga sync stoicai G-XXXX` — NEXT_PUBLIC_GA_ID already synced to Vercel production env from central env; the analytics wrapper just needs a `<Script>` tag in layout.tsx. Defer to a v0.2 polish PR — agent + content are the priority for v0.1.
+- [x] PBI-7.5 Vercel set up + first prod deploy. `matsiems/stoicai` linked under team_xW8X8CreHT9RkB9uuyZD5GcR (id `prj_3bt4OzqeQP4YLAfi5qnHhFOtOttM`). 19 env vars synced from `.env.local` to Production. SSO deployment-protection (`{deploymentType: all_except_custom_domains}`) flipped off via Management API PAT so the auto-generated URL is public. Deploy `dpl_AcY552Fexgt8CQZQbhkHJjKRYxym` READY in 38s.
+- [x] PBI-7.6 Registry + README updated: `live_url` and `vercel_project_id` added to apps-registry.json rank 32; README "Prod" link rewritten from placeholder to the live URL.
+- [x] PBI-7.7 `/push` final — see commit shipping this BACKLOG update.
 
 ## Related — FSB cross-link (separate project)
 

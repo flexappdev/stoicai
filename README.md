@@ -3,7 +3,7 @@
 > Ancient wisdom, AI-native. A Stoic mentor agent grounded in a 10,000-item curated corpus of Marcus Aurelius, Seneca, Epictetus, Musonius, and beyond — with on-demand image, audio, and video generation per passage.
 
 - **Local**: http://localhost:17003
-- **Prod**: https://stoicai.vercel.app *(after Phase 7)*
+- **Prod**: https://stoicai-lqjbthjqa-matsiems.vercel.app · `vercel_project_id` `prj_3bt4OzqeQP4YLAfi5qnHhFOtOttM`
 - **Repo**: https://github.com/flexappdev/stoicai
 - **Stack**: Next.js 16 (App Router) · React 19 · Tailwind v4 · Supabase (Postgres + pgvector + Auth) · OpenRouter (LLM router) · MongoDB Atlas (cache mirror) · S3 com27 (media) · Runware FLUX (images) · Piper TTS (audio) · Seedance + Remotion (video) · Vercel (deploy)
 - **Port**: `17003` · **Accent**: `#006699` · **S3 prefix**: `com27/stoicai/` · **Fleet rank**: 32
