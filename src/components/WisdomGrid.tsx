@@ -7,6 +7,7 @@ import {
   type Wisdom, type Virtue, type Context,
 } from "@/lib/wisdom-data";
 import { getStoic } from "@/lib/stoics-data";
+import MediaActions from "./MediaActions";
 
 type Sort = "quality" | "random";
 
@@ -223,17 +224,25 @@ export default function WisdomGrid({ initialTheme }: { initialTheme?: string }) 
                     q={w.quality_score}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    copyText(w.text, w.source_ref);
-                    setCopiedId(w.id);
-                    setTimeout(() => setCopiedId((c) => (c === w.id ? null : c)), 1500);
-                  }}
-                  className="text-[var(--accent)] hover:underline"
-                >
-                  {copiedId === w.id ? "copied!" : "copy"}
-                </button>
+                <div className="flex items-center gap-3">
+                  <MediaActions
+                    itemId={w.id}
+                    text={w.text}
+                    author={st?.name ?? w.author_slug}
+                    source_ref={w.source_ref}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      copyText(w.text, w.source_ref);
+                      setCopiedId(w.id);
+                      setTimeout(() => setCopiedId((c) => (c === w.id ? null : c)), 1500);
+                    }}
+                    className="text-[var(--accent)] hover:underline"
+                  >
+                    {copiedId === w.id ? "copied!" : "copy"}
+                  </button>
+                </div>
               </div>
             </li>
           );
