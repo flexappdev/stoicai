@@ -66,15 +66,31 @@ function buildBatchPrompt(items: StoicItemInsert[]): string {
   return `Enrich the following ${items.length} Stoic items. Return a JSON ARRAY of exactly ${items.length} objects in the SAME order.\n\n${lines.join("\n\n")}`;
 }
 
-function isValidEnrichment(x: unknown): x is Enrichment {
-  if (!x || typeof x !== "object") return false;
+// Lenient coercion: drop invalid themes/contexts (instead of failing the row);
+// clamp quality_score; coerce difficulty/virtue to safe defaults if the model
+// drifts. Returns null only when the row is structurally broken.
+function coerceEnrichment(x: unknown): Enrichment | null {
+  if (!x || typeof x !== "object") return null;
   const e = x as Record<string, unknown>;
-  if (!Array.isArray(e.themes) || !e.themes.every((t) => typeof t === "string" && (THEMES as readonly string[]).includes(t))) return false;
-  if (e.virtue !== null && !(typeof e.virtue === "string" && (VIRTUES as readonly string[]).includes(e.virtue))) return false;
-  if (typeof e.difficulty !== "string" || !(DIFFICULTIES as readonly string[]).includes(e.difficulty)) return false;
-  if (!Array.isArray(e.use_contexts) || !e.use_contexts.every((c) => typeof c === "string" && (CONTEXTS as readonly string[]).includes(c))) return false;
-  if (typeof e.quality_score !== "number" || e.quality_score < 0 || e.quality_score > 100) return false;
-  return true;
+  const themes = Array.isArray(e.themes)
+    ? (e.themes.filter((t) => typeof t === "string" && (THEMES as readonly string[]).includes(t)) as Theme[])
+    : [];
+  const virtue =
+    e.virtue === null
+      ? null
+      : typeof e.virtue === "string" && (VIRTUES as readonly string[]).includes(e.virtue)
+        ? (e.virtue as Virtue)
+        : null;
+  const difficulty =
+    typeof e.difficulty === "string" && (DIFFICULTIES as readonly string[]).includes(e.difficulty)
+      ? (e.difficulty as Difficulty)
+      : "intermediate";
+  const use_contexts = Array.isArray(e.use_contexts)
+    ? (e.use_contexts.filter((c) => typeof c === "string" && (CONTEXTS as readonly string[]).includes(c)) as Context[])
+    : [];
+  const raw = typeof e.quality_score === "number" ? e.quality_score : 50;
+  const quality_score = Math.max(0, Math.min(100, Math.round(raw)));
+  return { themes, virtue, difficulty, use_contexts, quality_score };
 }
 
 export async function enrichBatch(items: StoicItemInsert[]): Promise<Enrichment[]> {
@@ -102,10 +118,11 @@ export async function enrichBatch(items: StoicItemInsert[]): Promise<Enrichment[
   }
   const out: Enrichment[] = [];
   for (let i = 0; i < parsed.length; i++) {
-    if (!isValidEnrichment(parsed[i])) {
-      throw new Error(`enrichBatch: invalid enrichment at index ${i}: ${JSON.stringify(parsed[i]).slice(0, 200)}`);
+    const coerced = coerceEnrichment(parsed[i]);
+    if (!coerced) {
+      throw new Error(`enrichBatch: unrecoverable enrichment at index ${i}: ${JSON.stringify(parsed[i]).slice(0, 200)}`);
     }
-    out.push(parsed[i] as Enrichment);
+    out.push(coerced);
   }
   return out;
 }
